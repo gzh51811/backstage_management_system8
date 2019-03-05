@@ -1,0 +1,178 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>后台登录</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="css/index.css"  >
+  <link rel="SHORTCUT ICON" href="img/system.ico">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<script>
+  let user = localStorage.getItem('user');
+  if(!user){
+      user = {}
+  }else{
+      user = JSON.parse(user);
+  }
+
+  if(user.token){
+  // 判断本地是否有token
+  let xhr = new XMLHttpRequest();
+  xhr.onload = ()=>{
+      let res = JSON.parse(xhr.responseText);
+    if(res.status == 200){
+         location.href="html/goodslist.html";
+    }
+  }
+  xhr.open('post','/tokenverify',true);
+  xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  xhr.send('token='+user.token)
+  }
+
+</script>
+<body>
+  <div id="reg">
+    
+    <form class="layui-form" action="" >
+        <h2 >后台管理系统</h2>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="phone" id="users" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" id="pass" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">验证码</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" id="yzm" autocomplete="off" class="layui-input"> <span><i id="scyzm"></i></span><span id="sjscyzm"> 看不清，换一张</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="like1[read]" lay-skin="primary" title="七天免登陆" id="mdl">
+                </div>
+              </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+    </form>
+  </div>
+<script src="lib/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+  
+layui.use(['form', 'layedit', 'laydate'], function(){
+  var form = layui.form
+  ,layer = layui.layer
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate;
+  var yzm = document.getElementById('yzm');
+  var scyzm = document.getElementById('scyzm');
+  var sjscyzm = document.getElementById('sjscyzm');
+  var users = document.getElementById('users');
+  var pass = document.getElementById('pass');
+  let mdl = document.querySelector('#mdl');
+  //自定义验证规则
+  form.verify({
+    title: function(value){
+      if(value.length < 5){
+        return '标题至少得5个字符啊';
+      }
+    }
+    // ,pass: [
+    //   /^[\S]{6,12}$/
+    //   ,'手机号和密码不正确'
+    // ]
+    ,content: function(value){
+      layedit.sync(editIndex);
+    }
+  });
+  function sjscyzmn(){
+      var res ='';
+      var str ='0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+      for(var i=0;i<4;i++){
+            res +=str[Math.floor(Math.random()*62)];
+      }
+      scyzm.innerHTML=res;
+  }
+  sjscyzmn();
+  sjscyzm.onclick=()=>{
+    sjscyzmn();
+  }
+  //监听提交
+  form.on('submit(demo1)', function(data){
+      var tex1 = (scyzm.innerHTML).toLowerCase();
+      var tex2 = (yzm.value).toLowerCase();
+      var tex3 = users.value.trim();
+      var tex4 = pass.value.trim();
+      let _mdl = mdl.checked;
+      if(tex3){
+        if(tex4){
+            if( tex1 ==tex2){
+              let xhr = new XMLHttpRequest();
+                xhr.onload = ()=>{
+                    if(xhr.status == 200){
+                        let res = xhr.responseText;
+                        console.log(res);
+                        if(res){
+                          console.log(111);
+                          localStorage.setItem('user',xhr.responseText);
+                          location.href = 'html/goodslist.html';
+                        }
+                        else if(!res){
+                            layer.alert('账号或密码错误', function(index){
+                              layer.close(index);
+                            });
+                        }
+                        
+                    }
+                }
+                xhr.open('post','/login',true);
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+                let data = `phone=${tex3}&password=${tex4}&mdl=${_mdl}`;
+                xhr.send(data);
+            }else{
+            layer.alert('验证码错误', {
+                // title: '输入错误'
+            })
+            sjscyzmn();
+            yzm.value ='';
+            }
+        }else{
+            layer.alert('密码不能为空', {
+                    // title: '输入错误'
+            })
+      }
+      }else{
+        layer.alert('手机号不能为空', {
+                // title: '输入错误'
+            })
+      }
+      
+   
+    return false;
+  });
+});
+</script>
+
+</body>
+</html>

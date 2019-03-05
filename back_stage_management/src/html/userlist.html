@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>商品列表</title>
+  <!-- 小图标 -->
+  <link rel="SHORTCUT ICON" href="../img/system.ico">
+  <link rel="stylesheet" href="../lib/layui/css/layui.css">
+  <!-- 修改样式 -->
+  <style type="text/css">  
+    .logo_header{
+        font-size: 14px !important;
+    }
+
+  </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo logo_header">陈培林/陆常青-后台管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      
+      <li class="layui-nav-item">
+      <a href="../index.html">首页</a>
+      </li>
+     
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img  src="../img/user.png" class="layui-nav-img">
+          <span id="username"></span>    
+        </a>
+      </li>
+      <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">商品管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="goodslist.html">商品列表</a></dd>
+            <dd><a href="category.html">商品分类</a></dd>
+            <dd><a href="addlist.html">添加商品</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">用户管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="userlist.html">用户列表</a></dd>
+            <dd><a href="addusers.html">添加用户</a></dd>
+        
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">订单管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="orderlist.html">订单列表</a></dd>  
+          </dl>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">管理员列表</div>
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+ 
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" > <a href="addusers.html">添加管理员</a></button>
+  </div>
+</script>
+ 
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">保存</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+  </div>
+  
+
+</div>
+<script src="../lib/layui/layui.js"></script>
+<script>
+    var username = document.getElementById('username');
+    var tuichu = document.getElementById('tuichu');
+    let user = localStorage.getItem('user');
+    if(!user){
+        user = {}
+    }else{
+        user = JSON.parse(user);
+    }
+    username.innerHTML=user.username;
+    tuichu.onclick = (e)=>{
+          layer.confirm('您真的要退出吗？',function(index){
+            localStorage.removeItem('user');
+            location.reload();
+            location.href='../index.html';
+            layer.close(index);
+          }) 
+               
+        }
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+});
+  layui.use('table', function(){
+    var table = layui.table;
+    
+    table.render({
+      elem: '#test'
+      ,url:'../userlist'
+      ,toolbar: '#toolbarDemo'
+      ,title: '用户数据表'
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'username', title:'用户名', width:120, edit: 'text'}
+        ,{field:'email', title:'邮箱', width:200, edit: 'text', templet: function(res){
+          return '<em>'+ res.email +'</em>'
+        }}
+        ,{field:'sex', title:'性别', width:96, edit: 'text'}
+        ,{field:'phone', title:'手机号', width:120, edit: 'text'}
+        ,{field:'data', title:'生日', width:150, edit: 'text'}
+        ,{field:'regtime', title:'注册时间', width:150, sort: true}
+        ,{field:'close', title:'超级管理员', width:120,sort: true,edit: 'text'}
+        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+      ]]
+      ,page: true
+    });
+
+
+
+
+
+    table.on('tool(test)', function(obj){
+    var data = obj.data;
+    var reg_email  = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //网上推荐
+    var reg_phone = /^1[3-9]\d{9}$/
+    //console.log(obj)
+    if(obj.event === 'del'){
+      layer.confirm('真的删除行么', function(index){
+        obj.del();
+        var state = 'del';
+          var res =`state=${state}&id=${data._id}`;
+          console.res;
+          ajax2(res);
+        layer.close(index);
+      });
+    } else if(obj.event === 'edit'){
+      if(!data.username){
+            layer.confirm('请输入正确的用户名', function(index){
+              layer.close(index);
+            });    
+      }else if(!reg_email.test(data.email)){
+            layer.confirm('请输入正确的邮箱', function(index){
+                  layer.close(index);
+                }); 
+      }else if(data.sex!='男'&&data.sex!='女'&&data.sex!='不详'){
+            layer.confirm('请输入正确的性别', function(index){
+                  layer.close(index);
+                }); 
+      }else if(data.close!='不是'&&data.close!='是'){
+            layer.confirm('请正确地输入是否是超级管理员', function(index){
+                  layer.close(index);
+                }); 
+      }else if(!reg_phone.test(data.phone)){
+            layer.confirm('请输入正确的手机号', function(index){
+                  layer.close(index);
+                }); 
+      }
+        else{
+          layer.confirm('真的要保存行么', function(index){
+            var state = 'update';
+            var res =`state=${state}&id=${data._id}&username=${data.username}&email=${data.email}&sex=${data.sex}&phone=${data.phone}&close=${data.close}`;
+            console.res;
+            ajax2(res);
+            layer.close(index);
+          }); 
+        }
+        
+    }
+    function ajax2(data){
+        let xhr = new XMLHttpRequest();
+                xhr.open('post','../userlist',true);
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+                xhr.send(data);
+                
+    }
+  });
+});
+</script>
+</body>
+</html>

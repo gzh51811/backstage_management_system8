@@ -1,0 +1,50 @@
+#reg{
+    width: 100%;
+    height: 626px;
+    background: url(../img/reg.jpg) no-repeat;
+    background-size: cover;
+    position: relative;
+    left: 50%;
+    margin-left:-50%;
+}
+h2{
+    margin-left:60px;
+    color:white;
+    font-size:50px;
+    line-height: 120px;
+
+}
+#reg form{
+    position:absolute;
+    left: 35%;
+    top: 20%;
+    transform: translate(-50%,-50%);
+    color:#c78522;
+    transform: scale(1.2);
+
+    
+}
+#reg .layui-form-label{
+    font-weight: 900;
+}
+.layui-form-item {
+    margin-bottom: 5px;
+}
+#scyzm{
+    float: left;
+    display: block;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 5px;
+    margin-top: 5px;
+    text-align: center;
+    background: #333;
+    font-style:italic;
+    text-decoration:line-through;
+}
+#sjscyzm{
+    display: block;
+    float: left;
+    line-height: 40px;
+}
