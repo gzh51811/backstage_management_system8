@@ -34,15 +34,11 @@
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="../img/user.png" class="layui-nav-img">
-          贤心
+          <img  src="../img/user.png" class="layui-nav-img">
+          <span id="username"></span>    
         </a>
-        <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl>
       </li>
-      <li class="layui-nav-item"><a href="">退出</a></li>
+      <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出</a></li>
     </ul>
   </div>
   
@@ -50,19 +46,18 @@
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed">
+        <li class="layui-nav-item ">
           <a class="" href="javascript:;">商品管理</a>
           <dl class="layui-nav-child">
             <dd><a href="goodslist.html">商品列表</a></dd>
-            <dd><a href="category.html">商品分类</a></dd>
             <dd><a href="addlist.html">添加商品</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item">
+        <li class="layui-nav-item layui-nav-itemed">
           <a href="javascript:;">用户管理</a>
           <dl class="layui-nav-child">
             <dd><a href="userlist.html">用户列表</a></dd>
-            <dd><a href="addusers.html">添加用户</a></dd>
+            <dd><a href="addusers.html" style="background: #009688">添加用户</a></dd>
         
           </dl>
         </li>
@@ -169,12 +164,28 @@
 <script src="../lib/layui/layui.js"></script>
 <script>
 //JavaScript代码区域
+var username = document.getElementById('username');
+  var tuichu = document.getElementById('tuichu');
+  let user = localStorage.getItem('user');
+  if(!user){
+      user = {}
+  }else{
+      user = JSON.parse(user);
+  }
+  username.innerHTML=user.username;
+  tuichu.onclick = (e)=>{
+        layer.confirm('您真的要退出吗？',function(index){
+          localStorage.removeItem('user');
+          location.reload();
+          location.href='../index.html';
+          layer.close(index);
+        }) 
+              
+      }
 layui.use('element', function(){
   var element = layui.element;
   
 });
-</script>
-<script>
   layui.use(['form', 'layedit', 'laydate'], function(){
     var form = layui.form
     ,layer = layui.layer
@@ -233,57 +244,81 @@ layui.use('element', function(){
     var output3=document.querySelector('.output3');
     var layui_btn=document.querySelector('.layui-btn');
     var judgephone=document.querySelector('#judge_phone');
-  
+    
     form.on('submit(demo1)', function(data){
-      var _psw=psw.value;
-      var _repsw=repsw.value;
-      if(_psw==_repsw){
-        var textarea_value=textarea.value.trim();
-        data.field['desc']=textarea_value;
-        var  res_data=JSON.stringify(data.field);
-        console.log(res_data);
-        // layer.alert(JSON.stringify(data.field), {
-        //   title: '最终的提交信息'
-        // });
-
-          let xhr = new XMLHttpRequest();
+      let xhr = new XMLHttpRequest();
+      let user = localStorage.getItem('user');
+            if(!user){
+                user = {}
+            }else{
+                user = JSON.parse(user);
+            }
             xhr.onload = ()=>{
                 if(xhr.status == 200){
                   // JSON.parse(
-                    let res = JSON.parse(xhr.responseText);
+                    let res = xhr.responseText;
                     
-                    if(res.ok=='1'){
-                        // location.href='goodslist.html';
-                      layer.alert('添加用户成功');
+                    if(res=='yes'){
+                      var _psw=psw.value;
+                      var _repsw=repsw.value;
+                      if(_psw==_repsw){
+                        var textarea_value=textarea.value.trim();
+                        data.field['desc']=textarea_value;
+                        var  res_data=JSON.stringify(data.field);
+                        console.log(res_data);
+                        // layer.alert(JSON.stringify(data.field), {
+                        //   title: '最终的提交信息'
+                        // });
+
+                          let xhr = new XMLHttpRequest();
+                            xhr.onload = ()=>{
+                                if(xhr.status == 200){
+                                  // JSON.parse(
+                                    let res = JSON.parse(xhr.responseText);
+                                    
+                                    if(res.ok=='1'){
+                                        // location.href='goodslist.html';
+                                      layer.alert('添加用户成功');
+                                    }
+                                    else{
+                                      layer.alert('注册失败,请检查信息是否正确');
+                                    }
+                                    
+                                }
+                            }
+                            xhr.open('post','/register',true);
+                            xhr.setRequestHeader('Content-Type','application/json');
+
+                            xhr.send(res_data);
+                    
+                        // ????
+                        // layer.config({
+                        //   skin: 'demo-class'
+                        // });
+                        // body .juzhong .layui-layer-content{text-align:center}
+                        // // layer.open({
+                        // //   skin: 'juzhong'
+                        // // });
+
+
+                  
+                        
+                      }
+                      else{
+                        output1.innerHTML='两个密码不符';
+                        output2.innerHTML='两个密码不符';
+                      }
+                      
                     }
                     else{
-                      layer.alert('注册失败,请检查信息是否正确');
+                      layer.alert('您不是超级管理员不能添加新的管理员');
                     }
                     
                 }
             }
-            xhr.open('post','/register',true);
-            xhr.setRequestHeader('Content-Type','application/json');
+            xhr.open('get',`/login?_id=${user._id}`,true);
+            xhr.send();
 
-            xhr.send(res_data);
-    
-        // ????
-        // layer.config({
-        //   skin: 'demo-class'
-        // });
-        // body .juzhong .layui-layer-content{text-align:center}
-        // // layer.open({
-        // //   skin: 'juzhong'
-        // // });
-
-
-   
-        
-      }
-      else{
-         output1.innerHTML='两个密码不符';
-         output2.innerHTML='两个密码不符';
-      }
       return false;
 
 
@@ -337,20 +372,10 @@ layui.use('element', function(){
     
     
    
-    //表单初始赋值
-    form.val('example', {
-      "username": "贤心" // "name": "value"
-      ,"password": "123456"
-      ,"interest": 1
-      ,"like[write]": true //复选框选中状态
-      ,"close": true //开关状态
-      ,"sex": "女"
-      ,"desc": "我爱 layui"
-    })
-    
+
+ 
     
   });
 </script>
-<script src='../js/user_register.js'></script>
 </body>
 </html>

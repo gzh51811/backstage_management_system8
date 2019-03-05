@@ -58,22 +58,18 @@
     <ul class="layui-nav layui-layout-left">
       
       <li class="layui-nav-item">
-      <a href="">首页</a>
+      <a href="../index.html">首页</a>
       </li>
      
     </ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="../img/user.png" height="30" width="30" class="layui-nav-img">
-          贤心
+          <img  src="../img/user.png" class="layui-nav-img">
+          <span id="username"></span>    
         </a>
-        <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl>
       </li>
-      <li class="layui-nav-item"><a href="">退出</a></li>
+      <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出</a></li>
     </ul>
   </div>
 
@@ -86,14 +82,14 @@
           <a class="" href="javascript:;">商品管理</a>
           <dl class="layui-nav-child">
             <dd><a href="goodslist.html">商品列表</a></dd>
-            <dd><a href="addlist.html">添加商品</a></dd>
+            <dd><a href="addlist.html" style="background: #009688">添加商品</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item">
+        <li class="layui-nav-item" >
           <a href="javascript:;">用户管理</a>
           <dl class="layui-nav-child">
             <dd><a href="userlist.html">用户列表</a></dd>
-            <dd><a href="addusers.html">添加用户</a></dd>
+            <dd><a href="addusers.html"  >添加用户</a></dd>
         
           </dl>
         </li>
@@ -219,9 +215,25 @@ var date=document.querySelector('#date');
 var addbuynum=document.querySelector('#addbuynum');
 
 var currentimgurl='';
-
+var username = document.getElementById('username');
+  var tuichu = document.getElementById('tuichu');
+  let user = localStorage.getItem('user');
+  if(!user){
+      user = {}
+  }else{
+      user = JSON.parse(user);
+  }
+  username.innerHTML=user.username;
+  tuichu.onclick = (e)=>{
+        layer.confirm('您真的要退出吗？',function(index){
+          localStorage.removeItem('user');
+          location.reload();
+          location.href='../index.html';
+          layer.close(index);
+        }) 
+              
+      }
 // 按钮改变
-
   var params=location.search.slice(0,).split('=')[1];
   console.log(params)
   
@@ -405,7 +417,7 @@ judgebtn.onclick=function(){
 
  }); 
 </script>
-<script src='../js/user_register.js'></script>
+<!-- <script src='../js/user_register.js'></script> -->
 <script>
 //JavaScript代码区域
 layui.use('element', function(){

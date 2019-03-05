@@ -42,18 +42,17 @@
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed">
+        <li class="layui-nav-item ">
           <a class="" href="javascript:;">商品管理</a>
           <dl class="layui-nav-child">
             <dd><a href="goodslist.html">商品列表</a></dd>
-            <dd><a href="category.html">商品分类</a></dd>
             <dd><a href="addlist.html">添加商品</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item">
+        <li class="layui-nav-item layui-nav-itemed">
           <a href="javascript:;">用户管理</a>
           <dl class="layui-nav-child">
-            <dd><a href="userlist.html">用户列表</a></dd>
+            <dd><a href="userlist.html" style="background: #009688">用户列表</a></dd>
             <dd><a href="addusers.html">添加用户</a></dd>
         
           </dl>
@@ -90,24 +89,24 @@
 </div>
 <script src="../lib/layui/layui.js"></script>
 <script>
-    var username = document.getElementById('username');
-    var tuichu = document.getElementById('tuichu');
-    let user = localStorage.getItem('user');
-    if(!user){
-        user = {}
-    }else{
-        user = JSON.parse(user);
-    }
-    username.innerHTML=user.username;
-    tuichu.onclick = (e)=>{
-          layer.confirm('您真的要退出吗？',function(index){
-            localStorage.removeItem('user');
-            location.reload();
-            location.href='../index.html';
-            layer.close(index);
-          }) 
-               
-        }
+var username = document.getElementById('username');
+  var tuichu = document.getElementById('tuichu');
+  let user = localStorage.getItem('user');
+  if(!user){
+      user = {}
+  }else{
+      user = JSON.parse(user);
+  }
+  username.innerHTML=user.username;
+  tuichu.onclick = (e)=>{
+        layer.confirm('您真的要退出吗？',function(index){
+          localStorage.removeItem('user');
+          location.reload();
+          location.href='../index.html';
+          layer.close(index);
+        }) 
+              
+      }
 //JavaScript代码区域
 layui.use('element', function(){
   var element = layui.element;
@@ -128,7 +127,7 @@ layui.use('element', function(){
         }}
         ,{field:'sex', title:'性别', width:96, edit: 'text'}
         ,{field:'phone', title:'手机号', width:120, edit: 'text'}
-        ,{field:'data', title:'生日', width:150, edit: 'text'}
+        ,{field:'date', title:'生日', width:150, edit: 'text'}
         ,{field:'regtime', title:'注册时间', width:150, sort: true}
         ,{field:'close', title:'超级管理员', width:120,sort: true,edit: 'text'}
         ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}

@@ -28,14 +28,14 @@
      
     </ul>
     <ul class="layui-nav layui-layout-right">
-        <li class="layui-nav-item">
-          <a href="javascript:;">
-            <img  src="../img/user.png" class="layui-nav-img">
-            <span id="username"></span>    
-          </a>
-        </li>
-        <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出</a></li>
-      </ul>
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img  src="../img/user.png" class="layui-nav-img">
+          <span id="username"></span>    
+        </a>
+      </li>
+      <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出</a></li>
+    </ul>
   </div>
   
   <div class="layui-side layui-bg-black">
@@ -99,24 +99,24 @@
 <script src="../lib/layui/layui.js"></script>
 <script>
 //JavaScript代码区域
-    var username = document.getElementById('username');
-    var tuichu = document.getElementById('tuichu');
-    let user = localStorage.getItem('user');
-    if(!user){
-        user = {}
-    }else{
-        user = JSON.parse(user);
-    }
-    username.innerHTML=user.username;
-    tuichu.onclick = (e)=>{
-          layer.confirm('您真的要退出吗？',function(index){
-            localStorage.removeItem('user');
-            location.reload();
-            location.href='../index.html';
-            layer.close(index);
-          }) 
-               
-        }
+  var username = document.getElementById('username');
+  var tuichu = document.getElementById('tuichu');
+  let user = localStorage.getItem('user');
+  if(!user){
+      user = {}
+  }else{
+      user = JSON.parse(user);
+  }
+  username.innerHTML=user.username;
+  tuichu.onclick = (e)=>{
+        layer.confirm('您真的要退出吗？',function(index){
+          localStorage.removeItem('user');
+          location.reload();
+          location.href='../index.html';
+          layer.close(index);
+        }) 
+              
+      }
 layui.use('element', function(){
   var element = layui.element;
   

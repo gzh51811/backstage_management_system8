@@ -29,22 +29,18 @@
     <ul class="layui-nav layui-layout-left">
       
       <li class="layui-nav-item">
-      <a href="">首页</a>
+      <a href="../index.html">首页</a>
       </li>
      
     </ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="../img/user.png" height="30" width="30" class="layui-nav-img">
-          贤心
+          <img  src="../img/user.png" class="layui-nav-img">
+          <span id="username"></span>    
         </a>
-        <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl>
       </li>
-      <li class="layui-nav-item"><a href="">退出</a></li>
+      <li class="layui-nav-item"><a href="javascript:;" id="tuichu">退出</a></li>
     </ul>
   </div>
   
@@ -55,7 +51,7 @@
         <li class="layui-nav-item layui-nav-itemed">
           <a class="" href="javascript:;">商品管理</a>
           <dl class="layui-nav-child">
-            <dd><a href="###">商品列表</a></dd>
+            <dd><a href="###" style="background: #009688">商品列表</a></dd>
             <dd><a href="addlist.html">添加商品</a></dd>
           </dl>
         </li>
@@ -107,12 +103,28 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
  <script>
 //JavaScript代码区域
+var username = document.getElementById('username');
+  var tuichu = document.getElementById('tuichu');
+  let user = localStorage.getItem('user');
+  if(!user){
+      user = {}
+  }else{
+      user = JSON.parse(user);
+  }
+  username.innerHTML=user.username;
+  tuichu.onclick = (e)=>{
+        layer.confirm('您真的要退出吗？',function(index){
+          localStorage.removeItem('user');
+          location.reload();
+          location.href='../index.html';
+          layer.close(index);
+        }) 
+              
+      }
 layui.use('element', function(){
   var element = layui.element;
   
 });
-</script>
-<script>
   layui.use('table', function(){
     var table = layui.table;
     
@@ -126,13 +138,13 @@ layui.use('element', function(){
         {type: 'checkbox', fixed: 'left'}
         ,{field:'_id', title:'商品ID', width:80, fixed: 'left', unresize: true, sort: true}
         ,{field:'title', title:'商品名字', width:120, edit: 'text'},
-        ,{field:'img', title:'商品图片', width:157, sort: true, templet: function(res){
+        ,{field:'img', title:'商品图片', width:130, sort: true, templet: function(res){
           return '<img src="'+res.img+'">'}}
         ,{field:'sellingPrice', title:'现价', width:80, edit: 'text', sort: true} 
         ,{field:'pricing', title:'原价', width:80, sort: true} 
         ,{field:'classify', title:'商品类别', width:90, sort: true}
-        ,{field:'repertory', title:'库存', width:80, sort: true}  
-        ,{field:'salenum', title:'销量', width:80, sort: true}  
+        ,{field:'repertory', title:'库存', width:100, sort: true}  
+        ,{field:'salenum', title:'销量', width:100, sort: true}  
         ,{field:'uploadtime', title:'添加时间', width:120,edit: 'text'}
         ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:162}
       ]]
@@ -165,7 +177,7 @@ layui.use('element', function(){
     table.on('tool(test)', function(obj){
       var data = obj.data;
       console.log(this)
-      var thisidnum=this.parentElement.parentElement.parentElement.children[1].children[0].innerHTML;
+      var thisidnum=data._id;
       console.log(thisidnum);
       //console.log(obj)
       if(obj.event === 'del'){

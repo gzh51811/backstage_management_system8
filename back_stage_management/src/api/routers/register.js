@@ -11,18 +11,15 @@ var router = new Router();
  */
 router.post('/',async (ctx,next)=>{
     // 解构
-    console.log(ctx.request.body);
 
 
 
 
     let {username,password,sex,date,phone,close,desc,email} = ctx.request.body;
-    console.log(username,password,sex,date,phone,close,desc,email);
 
 
     let data = {username,password,sex,date,phone,close,desc,email,regtime:Date.now()}
     let res = await db.insert('users',data);
-    console.log(res);
 
     ctx.body = res.result;
 

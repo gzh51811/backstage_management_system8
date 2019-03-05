@@ -7,7 +7,7 @@ const routers = require('./api/routers');
 // 创建koa应用
 const app = new Koa();//app.context
 
-app.context.myname = 'backstage_supporter'
+app.context.myname = 'backstage_supporter';
 
 // 创建静态资源服务
 app.use(static('./'));

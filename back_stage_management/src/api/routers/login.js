@@ -2,6 +2,7 @@ const Router = require('koa-router');
 
 const db = require('../db');
 const token = require('../utils/token');
+const mongoose = require('mongoose');
 
 
 // 创建路由
@@ -40,5 +41,18 @@ router.post('/',async (ctx,next)=>{
     // 存入数据库
 
 })
+router.get('/',async (ctx,next)=>{
+    let {_id} =ctx.request.query;
+    console.log(_id);
+    var id = mongoose.Types.ObjectId(_id);
+    let res = await db.find('users',{'_id':id});
+    console.log(res[0].close);
+
+    if(res[0].close=='on'){
+        ctx.body = 'yes'
+    }else{
+        ctx.body = 'no'
+    }
+});
 
 module.exports = router;
