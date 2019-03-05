@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>陈培林/陆常青-后台管理系统</title>
+  <title>商品列表</title>
   <!-- 小图标 -->
   <link rel="SHORTCUT ICON" href="../img/system.ico">
   <link rel="stylesheet" href="../lib/layui/css/layui.css">
@@ -11,6 +11,12 @@
   <style type="text/css">  
     .logo_header{
         font-size: 14px !important;
+    }
+    tbody td{
+      height: 150px ;
+    }
+    .laytable-cell-1-undefined {
+      height: 100px !important;
     }
 
   </style>
@@ -50,7 +56,6 @@
           <a class="" href="javascript:;">商品管理</a>
           <dl class="layui-nav-child">
             <dd><a href="###">商品列表</a></dd>
-            <dd><a href="category.html">商品分类</a></dd>
             <dd><a href="addlist.html">添加商品</a></dd>
           </dl>
         </li>
@@ -75,18 +80,132 @@
   
   <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;">内容主体区域</div>
+    <div style="padding: 15px;">
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+      
+    </div>
   </div>
   
 
 </div>
-<script src="../lib/layui/layui.js"></script>
-<script>
+<!-- js -->
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+ 
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+              
+          
+<script src="../lib/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
+ <script>
 //JavaScript代码区域
 layui.use('element', function(){
   var element = layui.element;
   
 });
+</script>
+<script>
+  layui.use('table', function(){
+    var table = layui.table;
+    
+    table.render({
+      elem: '#test'
+      ,url:'/goodslist'
+      ,toolbar: '#toolbarDemo'
+      ,title: '用户数据表'
+      ,cols: [
+      [
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'_id', title:'商品ID', width:80, fixed: 'left', unresize: true, sort: true}
+        ,{field:'title', title:'商品名字', width:120, edit: 'text'},
+        ,{field:'img', title:'商品图片', width:157, sort: true, templet: function(res){
+          return '<img src="'+res.img+'">'}}
+        ,{field:'sellingPrice', title:'现价', width:80, edit: 'text', sort: true} 
+        ,{field:'pricing', title:'原价', width:80, sort: true} 
+        ,{field:'classify', title:'商品类别', width:90, sort: true}
+        ,{field:'repertory', title:'库存', width:80, sort: true}  
+        ,{field:'salenum', title:'销量', width:80, sort: true}  
+        ,{field:'uploadtime', title:'添加时间', width:120,edit: 'text'}
+        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:162}
+      ]]
+      ,page: true
+      // ,request: {
+      // pageName: 'curr' //页码的参数名称，默认：page
+      // ,limitName: 'nums' //每页数据量的参数名，默认：limit
+      // }
+    });
+    
+    //头工具栏事件
+    table.on('toolbar(test)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch(obj.event){
+        case 'getCheckData':
+          var data = checkStatus.data;
+          layer.alert(JSON.stringify(data));
+        break;
+        case 'getCheckLength':
+          var data = checkStatus.data;
+          layer.msg('选中了：'+ data.length + ' 个');
+        break;
+        case 'isAll':
+          layer.msg(checkStatus.isAll ? '全选': '未全选');
+        break;
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(test)', function(obj){
+      var data = obj.data;
+      console.log(this)
+      var thisidnum=this.parentElement.parentElement.parentElement.children[1].children[0].innerHTML;
+      console.log(thisidnum);
+      //console.log(obj)
+      if(obj.event === 'del'){
+        layer.confirm('真的删除行么', function(index){
+          obj.del();
+          // var tdidnum=document.querySelectorAll('.laytable-cell-1-0-1')[index].innerHTML*1;
+          // console.log(111,index,tdidnum);
+          // ajax 删除
+          let xhr = new XMLHttpRequest();
+          xhr.onload = ()=>{
+              if(xhr.status == 200){             
+                     
+              }
+          }
+          xhr.open('get','/listalter?_id='+thisidnum,true);
+          xhr.send(null);
+          // ajax删除
+          layer.close(index);
+        });
+      } else if(obj.event === 'edit'){
+        // layer.prompt({
+        //   formType: 2
+        //   ,value: data.img
+        // }, function(value, index){
+        //   obj.update({
+        //     img: value
+        //   });
+        //   console.log('混合双打哈速度快',value)
+        //   layer.close(index);
+        // });
+        location.href='addlist.html?_id='+thisidnum;
+      }
+
+
+    });
+
+
+
+
+  });
 </script>
 </body>
 </html>

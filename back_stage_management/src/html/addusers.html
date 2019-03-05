@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>注册</title>
+  <!-- 小图标 -->
+  <link rel="SHORTCUT ICON" href="../img/system.ico">
+  <link rel="stylesheet" href="../lib/layui/css/layui.css">
+  <!-- 修改样式 -->
+  <style type="text/css">  
+    .logo_header{
+        font-size: 14px !important;
+    }
+    .layui-layer-content{
+      text-align: center !important;
+    }
+
+
+  </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo logo_header">陈培林/陆常青-后台管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      
+      <li class="layui-nav-item">
+      <a href="../index.html">首页</a>
+      </li>
+     
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="../img/user.png" class="layui-nav-img">
+          贤心
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="">退出</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">商品管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="goodslist.html">商品列表</a></dd>
+            <dd><a href="category.html">商品分类</a></dd>
+            <dd><a href="addlist.html">添加商品</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">用户管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="userlist.html">用户列表</a></dd>
+            <dd><a href="addusers.html">添加用户</a></dd>
+        
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">订单管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="orderlist.html">订单列表</a></dd>  
+          </dl>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div >
+
+      <h1 style="padding: 10px;font-weight:bold;font-size:16px;color:#009688;">添加管理员</h1>
+<!--  -->
+    <form class="layui-form" action="" style='margin-left:50px;'>
+      <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+          <input type="text" name="username" lay-verify="title" autocomplete="off"  class="layui-input" style='width:300px' placeholder='至少输入三个字符'>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label" >密码</label>
+        <div class="layui-input-block">
+          <input type="text" name="password" lay-verify="required" placeholder="请输入6-12密码" autocomplete="off" class="layui-input psw" style='width:300px'>
+          <div class="output1" style='line-height:20px;margin-top:3px;color:red;'></div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-inline">
+          <input type="password" name="password" lay-verify="pass" placeholder="请输入确认密码" autocomplete="off" class="layui-input repsw" style='width:300px'>
+          <div class="output2" style='line-height:20px;margin-top:3px;color:red;'></div>
+        </div>
+        <div class="layui-form-mid layui-word-aux"></div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline" >
+          <label class="layui-form-label">手机号</label>
+          <div class="layui-input-inline">
+            <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input" style='margin-bottom:5px;' id='judge_phone'>
+            <div class="output3" ></div>
+          </div>
+        </div>
+        <br />
+        <div class="layui-inline">
+          <label class="layui-form-label">生日</label>
+          <div class="layui-input-inline">
+            <input type="text" name="date" id="date" lay-verify="date" placeholder="格式:1990-01-01" autocomplete="off" class="layui-input" lay-key="1">
+          </div>
+          
+        </div>
+        <br />
+        <div class="layui-inline">
+          <label class="layui-form-label">邮箱地址</label>
+          <div class="layui-input-inline">
+            <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+          <input type="radio" name="sex" value="男" title="男" >
+          <input type="radio" name="sex" value="女" title="女">
+          <input type="radio" name="sex" value="不详" title="不详" checked="">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label" style="width:150px;text-align:left">是否设置为超级管理员</label>
+        <div class="layui-input-block">
+          <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF"><div class="layui-unselect layui-form-switch" lay-skin="_switch"><em>OFF</em><i></i></div>
+        </div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">个人说明</label>
+        <div class="layui-input-block">
+          <textarea placeholder="请输入内容" class="layui-textarea" style='width:500px'></textarea>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit="" lay-filter="demo1">添加</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+
+<!--  -->
+    </div>
+  </div>
+  
+
+</div>
+<script src="../lib/layui/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+<script>
+  layui.use(['form', 'layedit', 'laydate'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate;
+    
+    //日期
+    laydate.render({
+      elem: '#date'
+    });
+    laydate.render({
+      elem: '#date1'
+    });
+    
+    //创建一个编辑器
+    var editIndex = layedit.build('LAY_demo_editor');
+   
+    //自定义验证规则
+    form.verify({
+      title: function(value){
+        if(value.length==0){
+           return '用户名不能有空';
+
+        }else if(value.length < 3){
+
+            return '用户名格式有误';
+
+        }
+
+       
+      }
+      ,pass: [
+        /^[\S]{6,12}$/
+        ,'密码必须6到12位，且不能出现空格'
+      ]
+      ,content: function(value){
+        layedit.sync(editIndex);
+      }
+    });
+    
+    //监听指定开关
+    form.on('switch(switchTest)', function(data){
+      layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
+        offset: '6px'
+      });
+      layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+    });
+    
+    //监听提交
+    var textarea=document.querySelector('.layui-textarea') ;
+    var btn=document.querySelector('.layui-btn');
+    var psw=document.querySelector('.psw');
+    var repsw=document.querySelector('.repsw');
+    var output1=document.querySelector('.output1');
+    var output2=document.querySelector('.output2');
+    var output3=document.querySelector('.output3');
+    var layui_btn=document.querySelector('.layui-btn');
+    var judgephone=document.querySelector('#judge_phone');
+  
+    form.on('submit(demo1)', function(data){
+      var _psw=psw.value;
+      var _repsw=repsw.value;
+      if(_psw==_repsw){
+        var textarea_value=textarea.value.trim();
+        data.field['desc']=textarea_value;
+        var  res_data=JSON.stringify(data.field);
+        console.log(res_data);
+        // layer.alert(JSON.stringify(data.field), {
+        //   title: '最终的提交信息'
+        // });
+
+          let xhr = new XMLHttpRequest();
+            xhr.onload = ()=>{
+                if(xhr.status == 200){
+                  // JSON.parse(
+                    let res = JSON.parse(xhr.responseText);
+                    
+                    if(res.ok=='1'){
+                        // location.href='goodslist.html';
+                      layer.alert('添加用户成功');
+                    }
+                    else{
+                      layer.alert('注册失败,请检查信息是否正确');
+                    }
+                    
+                }
+            }
+            xhr.open('post','/register',true);
+            xhr.setRequestHeader('Content-Type','application/json');
+
+            xhr.send(res_data);
+    
+        // ????
+        // layer.config({
+        //   skin: 'demo-class'
+        // });
+        // body .juzhong .layui-layer-content{text-align:center}
+        // // layer.open({
+        // //   skin: 'juzhong'
+        // // });
+
+
+   
+        
+      }
+      else{
+         output1.innerHTML='两个密码不符';
+         output2.innerHTML='两个密码不符';
+      }
+      return false;
+
+
+    });
+
+    // 手机验证
+    function judgetel(str){ 
+    //号码
+      var reg = /^1[3-9]\d{9}$/
+      return reg.test(str);
+    }
+    judgephone.onblur=function(){
+        var _judgephone=judgephone.value;
+        var telres=judgetel(_judgephone);
+        if(telres){
+            let xhr = new XMLHttpRequest();
+            xhr.onload = ()=>{
+                if(xhr.status == 200){
+                  
+                    let res = xhr.responseText;
+                    if(res=='yes'){
+                      output3.innerHTML='手机号码可以注册';
+                      output3.style.color='#009688';
+                      output3.style.fontSize='14px';
+
+                    }
+                    else if(res=='no'){
+                      output3.innerHTML='手机号码已被注册';
+                      output3.style.color='red';
+                      output3.style.fontSize='14px';
+
+                    }
+                    
+                    
+                }
+            }
+            xhr.open('get','/register?phone='+_judgephone,true);
+            // xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+            xhr.send(null);
+
+        }
+        else{
+              output3.innerHTML='手机号码格式有误';
+              output3.style.color='red';
+              output3.style.fontSize='14px';
+
+
+        }
+    }
+    
+    
+   
+    //表单初始赋值
+    form.val('example', {
+      "username": "贤心" // "name": "value"
+      ,"password": "123456"
+      ,"interest": 1
+      ,"like[write]": true //复选框选中状态
+      ,"close": true //开关状态
+      ,"sex": "女"
+      ,"desc": "我爱 layui"
+    })
+    
+    
+  });
+</script>
+<script src='../js/user_register.js'></script>
+</body>
+</html>

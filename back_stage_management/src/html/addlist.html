@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加/编辑商品</title>
+  <!-- 小图标 -->
+  <link rel="SHORTCUT ICON" href="../img/system.ico">
+  <link rel="stylesheet" href="../lib/layui/css/layui.css">
+  <!-- 修改样式 -->
+  <style type="text/css">  
+    .logo_header{
+        font-size: 14px !important;
+    }
+    tbody td{
+      height: 150px ;
+    }
+    .laytable-cell-1-undefined {
+      height: 100px !important;
+    }
+     #demo2  img{
+         width: 100px;
+         height: 100px;
+         margin:0 5px;
+         display:block;
+    } 
+    .dv{
+       position:relative;
+       width: 110px;
+       height: 110px;
+       padding:5px;
+    }
+    i{
+      position:absolute;
+      border-radius:50%;
+      height: 16px;
+      width: 16px;
+      line-height: 16px;
+      text-align: center;
+      border:1px solid red;
+      right: 2px;
+      top: 2px;
+      color:red;
+      font-size: 14px;
+      /*font-weight: bold;*/
+      cursor: pointer;
+
+    }
+
+
+  </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo logo_header">陈培林/陆常青-后台管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      
+      <li class="layui-nav-item">
+      <a href="">首页</a>
+      </li>
+     
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="../img/user.png" height="30" width="30" class="layui-nav-img">
+          贤心
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="">退出</a></li>
+    </ul>
+  </div>
+
+
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">商品管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="goodslist.html">商品列表</a></dd>
+            <dd><a href="addlist.html">添加商品</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">用户管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="userlist.html">用户列表</a></dd>
+            <dd><a href="addusers.html">添加用户</a></dd>
+        
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="####">订单管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="orderlist.html">订单列表</a></dd>  
+          </dl>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+        <h1 style="padding: 10px;font-weight:bold;font-size:16px;color:#009688;">添加/编辑商品</h1>
+     
+    <form class="layui-form" action="" style='margin-left:50px;'>
+        <!-- <div class="layui-form-item" id='blockornone'>
+          <label class="layui-form-label">商品ID</label>
+          <div class="layui-input-block">
+            <input type="text" name="listid" lay-verify="title" autocomplete="off"  class="layui-input" style='width:300px' id='addid'>
+          </div>
+        </div> -->
+        <div class="layui-form-item">
+          <label class="layui-form-label">商品名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="listname" lay-verify="title" autocomplete="off"  class="layui-input" style='width:300px' id="addname">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label" >现价</label>
+          <div class="layui-input-block">
+            <input type="text" name="presentprice" lay-verify="required" autocomplete="off" class="layui-input psw" style='width:190px' id="addpprice">
+            <div class="output1" style='line-height:20px;margin-top:3px;color:red;'></div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">原价</label>
+          <div class="layui-input-inline">
+            <input type="text" name="originprice" lay-verify="pass"  autocomplete="off" class="layui-input repsw" style='width:190px' id="addoprice">
+            <div class="output2" style='line-height:20px;margin-top:3px;color:red;'></div>
+          </div>
+          <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+        <div class="layui-inline" >
+          <label class="layui-form-label">商品类别</label>
+          <div class="layui-input-inline" style='width:190px;height:38px;margin-bottom:0px;'> 
+           
+            <select style='width: 190px;height:38px;display:block;'>
+              <option value="0" id='classifyname'></option>
+              <option value="1">小说</option>
+              <option value="2">日志</option>
+              <option value="3">童学</option>
+              <option value="4">散文</option>
+              <option value="5">短篇</option>
+            </select>
+          </div>
+        </div>
+        </div>
+
+  
+        <div class="layui-form-item">
+          <div class="layui-inline" >
+            <label class="layui-form-label">库存</label>
+            <div class="layui-input-inline">
+              <input type="tel" name="maxnum" lay-verify="required|phone" autocomplete="off" class="layui-input" style='margin-bottom:5px;'  id="addsalenum">
+              <div class="output3" ></div>
+            </div>
+          </div>
+          <br />
+          <div class="layui-inline">
+            <label class="layui-form-label">上传时间</label>
+            <div class="layui-input-inline">
+              <input type="text" name="date" id="date" lay-verify="date" placeholder="格式:1990/01/01" autocomplete="off" class="layui-input" lay-key="1" id="adddate">
+            </div>
+            
+          </div>
+          <br />
+          <div class="layui-inline" >
+            <label class="layui-form-label">销量</label>
+            <div class="layui-input-inline">
+              <input type="text" name="salenumber" lay-verify="email" autocomplete="off" class="layui-input" id="addbuynum">
+            </div>
+          </div>
+        </div>
+        <div class="layui-upload" style='margin-left:110px'>
+          <button type="button" class="layui-btn" id="test2">上传商品图片</button> 
+          <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;width:500px;">
+            预览图(选其中一个商品作为展示图)(必选)：
+            <div class="layui-upload-list" id="demo2" style="width:500px;"></div>
+          </blockquote>
+        </div> 
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <!-- <button class="layui-btn" lay-submit="" lay-filter="demo1" id='judgebtn'>确认添加</button> -->
+            <input type="button" id='judgebtn' style='display:inline-block;width:80px;height:34px;background:#009688;border:0 none;color:#fff;' value="确认添加" />
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+    </form>
+      
+    </div>
+  </div>
+</div>
+
+<script src="../lib/layui/layui.js"></script>
+
+<script>
+
+// 获取节点
+var addid=document.querySelector('#addid');
+var addname=document.querySelector('#addname');
+var addpprice=document.querySelector('#addpprice');
+var addoprice=document.querySelector('#addoprice');
+var addclassify=document.querySelector('#addclassify');
+var classifyname=document.querySelector('#classifyname');
+var addsalenum=document.querySelector('#addsalenum');
+var date=document.querySelector('#date');
+var addbuynum=document.querySelector('#addbuynum');
+
+var currentimgurl='';
+
+// 按钮改变
+
+  var params=location.search.slice(0,).split('=')[1];
+  console.log(params)
+  
+  var res_data;
+  var blockornone=document.querySelector('#blockornone');
+  if(typeof (params)=='string'){
+ 
+    judgebtn.value='确认修改';
+    // res_data='cid='+params;
+    var  res_data={
+          _id:params
+    }
+    // 有参数自己渲染
+            let xhr = new XMLHttpRequest();
+            xhr.onload = ()=>{
+                if(xhr.status == 200){
+                  // JSON.parse(
+                    let res = JSON.parse(xhr.responseText);
+                    console.log(res.data);
+                    currentimgurl=res.data.img.slice(7,);
+                    if(res.code=='0'){
+                      
+                      // addid.value=res.data._id;
+                      addname.value=res.data.title;
+                      addpprice.value=res.data.sellingPrice;
+                      addoprice.value=res.data.pricing;
+                      // addclassify.value=res.data.cid;
+                      addsalenum.value=res.data.repertory;
+                      addbuynum.value=res.data.salenum;
+                      date.value=res.data.uploadtime;
+                      
+                      classifyname.innerHTML=res.data.classify;
+                      var imgbtn=document.querySelector('#demo2');
+                      var $ = layui.jquery
+                      $('#demo2').append('<div class="dv" style="display:inline-block;"><img src="'+ res.data.img +'" alt="'+res.data.img.slice(7,)+'" class="layui-upload-img"><i class="closeimg closeimg1 ">&times</i></div>');
+                      var closeimg=document.querySelector('.closeimg');
+                      closeimg.onclick=function(){
+                        console.log('6666');
+                       closeimg.parentElement.parentElement.removeChild(closeimg.parentElement);
+                      }
+                    }
+                    
+                               
+                }
+            }
+            xhr.open('post','/editlist',true);
+            xhr.setRequestHeader('Content-Type','application/json');
+
+            xhr.send(JSON.stringify(res_data));
+    
+  }
+  else if(params=='underfined'){
+    judgebtn.value='确认添加';
+    
+    
+
+  };
+
+
+//多图片上传
+
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+
+  upload.render({
+    elem: '#test2'
+    ,url: '/uploadimg'
+    ,auto:true
+    ,data:{}
+    ,multiple: true
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+      
+      obj.preview(function(index, file, result){
+
+        console.log('文件对象',file.name);
+        $('#demo2').append('<div class="dv" style="display:inline-block;"><img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img"><i class="closeimg">&times</i></div>');
+        var imgs=document.querySelectorAll('.layui-upload-img');
+        // console.log('图片',imgs);
+        var imgbtn=document.querySelector('#demo2');
+        imgbtn.onclick=function(e){
+          // 获取图片
+          if(e.target.tagName=='IMG'){
+            for(var i=0;i<imgs.length;i++){
+              imgs[i].parentElement.style.border='';
+            }
+            e.target.parentElement.style.border='1px solid #000';
+            var currentimgsrc=e.target.getAttribute('alt');
+            currentimgurl=currentimgsrc;
+            console.log(currentimgsrc);
+            
+          };
+
+
+          // 删除图片节点
+          var closeimg1=document.querySelector('.closeimg1');
+          
+          if(closeimg1){
+              closeimg1.onclick=null;
+          }
+         
+          if(e.target.tagName=='I'){
+          
+            var imgalt=e.target.previousSibling.getAttribute('alt');
+            e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+            console.log(imgalt);
+            // 删除错误图片
+            let xhr = new XMLHttpRequest();
+            xhr.onload = ()=>{
+                if(xhr.status == 200){
+                  // JSON.parse(
+                    let res = JSON.parse(xhr.responseText);
+                    console.log(res);
+                    layer.confirm(res.msg,function(){
+                      layer.close();
+                    });
+                    
+                    
+                    
+                }
+            }
+            xhr.open('get','/deleteimg?imgext='+imgalt,true);
+            
+
+            xhr.send(null);
+                
+
+          }
+
+        };
+        
+      });
+   
+     
+    }
+    ,done: function(res){
+      //上传完毕
+    }
+});
+
+// ajax请求
+var  selection=document.querySelector('select');
+
+                  
+judgebtn.onclick=function(){
+  // console.log(123456,currentimgurl);
+  // console.log(selection.options[selection.selectedIndex].text);
+    var res_data={
+        _id: params,
+        // cid: addid.value,
+        title: addname.value,
+        pricing: addoprice.value,
+        sellingPrice: addpprice.value,
+        repertory: addsalenum.value,
+        classify: selection.options[selection.selectedIndex].text,
+        salenum: Number(addbuynum.value),
+        uploadtime: date.value,
+        img: '../img/'+currentimgurl 
+    }
+    console.log(res_data);
+    let xhr = new XMLHttpRequest();
+      xhr.onload = ()=>{
+          if(xhr.status == 200){
+            // JSON.parse(
+              let res = JSON.parse(xhr.responseText);
+              console.log(res);
+              // alert(res);
+              layer.confirm(res.msg,function(index){
+                layer.close(index);
+              });
+                      
+          }
+      }
+      xhr.open('post','/addlist',true);
+      xhr.setRequestHeader('Content-Type','application/json');
+
+      xhr.send(JSON.stringify(res_data));
+
+  }
+
+ }); 
+</script>
+<script src='../js/user_register.js'></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+</body>
+</html>
