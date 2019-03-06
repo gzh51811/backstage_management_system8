@@ -154,36 +154,59 @@ layui.use('element', function(){
         layer.close(index);
       });
     } else if(obj.event === 'edit'){
-      if(!data.username){
-            layer.confirm('请输入正确的用户名', function(index){
-              layer.close(index);
-            });    
-      }else if(!reg_email.test(data.email)){
-            layer.confirm('请输入正确的邮箱', function(index){
-                  layer.close(index);
-                }); 
-      }else if(data.sex!='男'&&data.sex!='女'&&data.sex!='不详'){
-            layer.confirm('请输入正确的性别', function(index){
-                  layer.close(index);
-                }); 
-      }else if(data.close!='不是'&&data.close!='是'){
-            layer.confirm('请正确地输入是否是超级管理员', function(index){
-                  layer.close(index);
-                }); 
-      }else if(!reg_phone.test(data.phone)){
-            layer.confirm('请输入正确的手机号', function(index){
-                  layer.close(index);
-                }); 
-      }
-        else{
-          layer.confirm('真的要保存行么', function(index){
-            var state = 'update';
-            var res =`state=${state}&id=${data._id}&username=${data.username}&email=${data.email}&sex=${data.sex}&phone=${data.phone}&close=${data.close}`;
-            console.res;
-            ajax2(res);
-            layer.close(index);
-          }); 
-        }
+      let xhr = new XMLHttpRequest();
+      let user = localStorage.getItem('user');
+            if(!user){
+                user = {}
+            }else{
+                user = JSON.parse(user);
+            }
+            xhr.onload = ()=>{
+                if(xhr.status == 200){
+                  // JSON.parse(
+                    let res = xhr.responseText;
+                    
+                    if(res=='yes'){
+                      if(!data.username){
+                            layer.confirm('请输入正确的用户名', function(index){
+                              layer.close(index);
+                            });    
+                      }else if(!reg_email.test(data.email)){
+                            layer.confirm('请输入正确的邮箱', function(index){
+                                  layer.close(index);
+                                }); 
+                      }else if(data.sex!='男'&&data.sex!='女'&&data.sex!='不详'){
+                            layer.confirm('请输入正确的性别', function(index){
+                                  layer.close(index);
+                                }); 
+                      }else if(data.close!='不是'&&data.close!='是'){
+                            layer.confirm('请正确地输入是否是超级管理员', function(index){
+                                  layer.close(index);
+                                }); 
+                      }else if(!reg_phone.test(data.phone)){
+                            layer.confirm('请输入正确的手机号', function(index){
+                                  layer.close(index);
+                                }); 
+                      }
+                        else{
+                          layer.confirm('真的要保存行么', function(index){
+                            var state = 'update';
+                            var res =`state=${state}&id=${data._id}&username=${data.username}&email=${data.email}&sex=${data.sex}&phone=${data.phone}&close=${data.close}`;
+                            console.res;
+                            ajax2(res);
+                            layer.close(index);
+                          }); 
+                        }
+                    }
+                    else{
+                      layer.alert('您不是超级管理员不能修改管理员信息');
+                    }
+                    
+                }
+            }
+            xhr.open('get',`/login?_id=${user._id}`,true);
+            xhr.send();
+
         
     }
     function ajax2(data){
