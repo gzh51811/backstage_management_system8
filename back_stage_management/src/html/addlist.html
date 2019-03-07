@@ -247,6 +247,8 @@ var username = document.getElementById('username');
           _id:params
     }
     // 有参数自己渲染
+    layui.use(['jquery','layer'],function(){
+      var $ = layui.jquery;
             let xhr = new XMLHttpRequest();
             xhr.onload = ()=>{
                 if(xhr.status == 200){
@@ -267,7 +269,8 @@ var username = document.getElementById('username');
                       
                       classifyname.innerHTML=res.data.classify;
                       var imgbtn=document.querySelector('#demo2');
-                      var $ = layui.jquery
+                      
+                      // var $ = layui.jquery;innerHTML=
                       $('#demo2').append('<div class="dv" style="display:inline-block;"><img src="'+ res.data.img +'" alt="'+res.data.img.slice(7,)+'" class="layui-upload-img"><i class="closeimg closeimg1 ">&times</i></div>');
                       var closeimg=document.querySelector('.closeimg');
                       closeimg.onclick=function(){
@@ -283,7 +286,7 @@ var username = document.getElementById('username');
             xhr.setRequestHeader('Content-Type','application/json');
 
             xhr.send(JSON.stringify(res_data));
-    
+    })
   }
   else if(params=='underfined'){
     judgebtn.value='确认添加';
@@ -300,7 +303,7 @@ layui.use('upload', function(){
   ,upload = layui.upload;
 
   upload.render({
-    elem: '#test2'
+    elem: '#test2' 
     ,url: '/uploadimg'
     ,auto:true
     ,data:{}
@@ -309,7 +312,7 @@ layui.use('upload', function(){
       //预读本地文件示例，不支持ie8
       
       obj.preview(function(index, file, result){
-
+        console.log(result);
         console.log('文件对象',file.name);
         $('#demo2').append('<div class="dv" style="display:inline-block;"><img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img"><i class="closeimg">&times</i></div>');
         var imgs=document.querySelectorAll('.layui-upload-img');
@@ -348,9 +351,9 @@ layui.use('upload', function(){
                   // JSON.parse(
                     let res = JSON.parse(xhr.responseText);
                     console.log(res);
-                    layer.confirm(res.msg,function(){
-                      layer.close();
-                    });
+                    // layer.confirm(res.msg,function(){
+                    //   layer.close();
+                    // });
                     
                     
                     

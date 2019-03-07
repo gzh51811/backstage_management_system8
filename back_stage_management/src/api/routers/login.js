@@ -48,7 +48,7 @@ router.get('/',async (ctx,next)=>{
     let res = await db.find('users',{'_id':id});
     console.log(res[0].close);
 
-    if(res[0].close=='on'){
+    if(res[0].close=='是'){
         ctx.body = 'yes'
     }else{
         ctx.body = 'no'

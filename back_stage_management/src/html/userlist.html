@@ -145,14 +145,34 @@ layui.use('element', function(){
     var reg_phone = /^1[3-9]\d{9}$/
     //console.log(obj)
     if(obj.event === 'del'){
-      layer.confirm('真的删除行么', function(index){
-        obj.del();
-        var state = 'del';
-          var res =`state=${state}&id=${data._id}`;
-          console.res;
-          ajax2(res);
-        layer.close(index);
-      });
+      let xhr = new XMLHttpRequest();
+      let user = localStorage.getItem('user');
+            if(!user){
+                user = {}
+            }else{
+                user = JSON.parse(user);
+            }
+            xhr.onload = ()=>{
+                if(xhr.status == 200){
+                  // JSON.parse(
+                    let res = xhr.responseText;
+                    if(res=='yes'){
+                        layer.confirm('真的删除行么', function(index){
+                        obj.del();
+                        var state = 'del';
+                          var res =`state=${state}&id=${data._id}`;
+                          console.res;
+                          ajax2(res);
+                        layer.close(index);
+                        });
+                    }else{
+                      layer.alert('您不是超级管理员不能修改管理员信息');
+                    }
+                    
+                }
+            }
+            xhr.open('get',`/login?_id=${user._id}`,true);
+            xhr.send();
     } else if(obj.event === 'edit'){
       let xhr = new XMLHttpRequest();
       let user = localStorage.getItem('user');
@@ -165,7 +185,6 @@ layui.use('element', function(){
                 if(xhr.status == 200){
                   // JSON.parse(
                     let res = xhr.responseText;
-                    
                     if(res=='yes'){
                       if(!data.username){
                             layer.confirm('请输入正确的用户名', function(index){

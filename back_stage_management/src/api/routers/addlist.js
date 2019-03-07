@@ -28,7 +28,7 @@ let  res=await db.find('goodslist',{"_id":new ObjectId(_id)});
     
     if(res.length>0){
         await db.update('goodslist',{"_id":new ObjectId(_id)},{$set:{'title':title,'pricing':pricing,'sellingPrice':sellingPrice,
-         'sellingPrice':repertory,'img':img,'uploadtime':uploadtime,'salenum':salenum,'classify':classify}});
+         'repertory':repertory,'img':img,'uploadtime':uploadtime,'salenum':salenum,'classify':classify}});
         // console.log(888,img);
         ctx.body ={msg:'更新成功'};
 
